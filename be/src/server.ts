@@ -3,7 +3,10 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { db } from "./config/db";
+import usersRoutes from "./routes/users.route";
 import authRoutes from "./routes/auth.route";
+import roomRoutes from "./routes/room.route";
+import bookingRoutes from "./routes/booking.route";
 
 dotenv.config();
 const app: Application = express();
@@ -22,7 +25,10 @@ app.use(
   }),
 );
 
+app.use("/api", usersRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/rooms", roomRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 const startServer = async () => {
   try {

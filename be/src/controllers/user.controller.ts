@@ -2,6 +2,7 @@ import { db } from "config/db";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { AuthRequest } from "middleware/auth";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -11,7 +12,7 @@ export const registerUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "ACCOUNT_INVALID" });
 
     const [exists]: any = await db.query(
-      "select * form Users where email = ?",
+      "select * from Users where email = ?",
       [email],
     );
 
@@ -79,5 +80,32 @@ export const logoutUser = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
+  }
+};
+
+export const profile = async (req: AuthRequest, res: Response) => {
+  try {
+    const [rows]: any = await db.query(
+      `select id, name, email, created_at 
+        from Users
+       where email = ? 
+       limit 1`,
+      [req.user?.email],
+    );
+
+    const user = rows[0];
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "USER_NOT_FOUND" });
+    }
+
+    return res.json({ success: true, data: user });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "INTERNAL_SERVER_ERROR" });
   }
 };
