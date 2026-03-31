@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { db } from "./config/db";
+import authRoutes from "./routes/auth.route";
 
 dotenv.config();
 const app: Application = express();
@@ -20,6 +21,8 @@ app.use(
     exposedHeaders: ["Authorization"],
   }),
 );
+
+app.use("/api/auth", authRoutes);
 
 const startServer = async () => {
   try {
