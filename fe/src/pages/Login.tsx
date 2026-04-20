@@ -22,7 +22,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-hero-gradient relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-black bg-hero-gradient relative overflow-hidden select-none">
       {/* hiệu ứng wave nền */}
       <div className="wave opacity-30"></div>
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
           <h2 className="text-3xl font-bold text-white">
             Welcome to{" "}
             <span className="text-accent underline decoration-accent/50">
-              E-COMMERCE
+              MY WEBSITE
             </span>
           </h2>
         </div>
@@ -73,14 +73,14 @@ export default function LoginPage() {
             className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold 
             shadow-lg hover:shadow-orange-500/30 hover:scale-[1.02] transition-all duration-200"
           >
-            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+            {loading ? "Currently Logged in..." : "Login"}
           </button>
 
           {/* Register */}
           <p className="text-center text-gray-400 text-sm">
-            Chưa có tài khoản?{" "}
+            No account yet?{" "}
             <Link to="/register" className="text-accent hover:underline">
-              Đăng ký
+              Register
             </Link>
           </p>
         </form>

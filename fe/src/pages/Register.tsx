@@ -63,7 +63,7 @@ export default function RegisterPage() {
           {/* Name */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">
-              Họ và tên
+              Full Name
             </label>
             <input
               type="text"
@@ -92,7 +92,7 @@ export default function RegisterPage() {
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Mật khẩu</label>
+            <label className="block text-sm text-gray-300 mb-1">Password</label>
             <input
               type="password"
               className="w-full bg-black/40 text-white border border-white/10 rounded-lg px-4 py-2.5 
@@ -107,7 +107,7 @@ export default function RegisterPage() {
           {/* Confirm Password */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">
-              Xác nhận mật khẩu
+              Confirm Password
             </label>
             <input
               type="password"
@@ -126,14 +126,14 @@ export default function RegisterPage() {
             className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-lg font-semibold 
             shadow-lg hover:shadow-orange-500/30 hover:scale-[1.02] transition-all duration-200"
           >
-            {loading ? "Đang đăng ký..." : "Đăng ký"}
+            {loading ? "Currently Registering..." : "Register"}
           </button>
 
           {/* Login */}
           <p className="text-center text-gray-400 text-sm">
-            Đã có tài khoản?{" "}
+            I already have an account?{" "}
             <Link to="/login" className="text-accent hover:underline">
-              Đăng nhập
+              Login
             </Link>
           </p>
         </form>

@@ -3,6 +3,7 @@ import MainLayout from "./components/layout/MainLayout";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import Home from "./pages/Home";
+import BookingPage from "./pages/Booking";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="/booking" element={<BookingPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
