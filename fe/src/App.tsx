@@ -1,20 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from "./components/layout/MainLayout";
-import LoginPage from "./pages/Login";
-import RegisterPage from "./pages/Register";
 import Home from "./pages/Home";
 import BookingPage from "./pages/Booking";
+import Header from "./components/layout/Header";
 
 export default function App() {
   return (
     <Router>
+      <Header />
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/booking" element={<BookingPage />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route index element={<Home />} />
+        <Route path="/booking" element={<BookingPage />} />
+
         {/* <Route path="/admin/login" element={<LoginForAdmin />} />
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/admin" element={<AdminLayout />}>
