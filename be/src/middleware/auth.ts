@@ -37,7 +37,7 @@ export const verifyToken = (
       role: "user" | "admin";
     };
 
-    req.user = decoded;
+    return (req.user = decoded);
 
     next();
   } catch (error: any) {

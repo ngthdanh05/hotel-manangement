@@ -22,7 +22,7 @@ export const createRoomType = async (req: Request, res: Response) => {
 
 export const getRoomTypes = async (req: Request, res: Response) => {
   const data = await service.getAllRoomTypes();
-  res.json({ success: true, data });
+  return res.json({ success: true, data });
 };
 
 export const updateRoomType = async (req: Request, res: Response) => {

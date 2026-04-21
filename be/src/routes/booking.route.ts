@@ -1,13 +1,20 @@
 import {
   createBooking,
-  getHistoryBookings,
+  deleteBooking,
+  getAllBookings,
+  handleCheckIn,
+  handleCheckOut,
+  updateBooking,
 } from "@/controllers/booking.controller";
-import { verifyToken } from "@/middleware/auth";
 import express from "express";
 
 const router = express.Router();
 
-router.post("/", verifyToken, createBooking);
-router.get("/history", verifyToken, getHistoryBookings);
+router.get("/", getAllBookings);
+router.post("/", createBooking);
+router.put("/:id", updateBooking);
+router.delete("/:id", deleteBooking);
+router.patch("/:id/checkin", handleCheckIn);
+router.patch("/:id/checkout", handleCheckOut);
 
 export default router;

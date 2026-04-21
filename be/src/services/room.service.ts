@@ -16,13 +16,17 @@ export const createRoom = async (data: {
 };
 
 export const getAllRooms = async () => {
-  const [rows] = await db.query("SELECT * FROM Phong");
+  const [rows] = await db.query(`
+    SELECT p.MaPhong, p.SoPhong, lp.TenLoai, lp.Gia, lp.SoNguoi
+    FROM Phong p
+    JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
+  `);
   return rows;
 };
 
 export const updateRoom = async (
   id: number,
-  data: { SoPhong?: string; LoaiPhong?: string; Gia?: number },
+  data: { SoPhong?: string; MaLoaiPhong?: number },
 ) => {
   const fields = [];
   const values = [];
@@ -31,23 +35,25 @@ export const updateRoom = async (
     fields.push("SoPhong = ?");
     values.push(data.SoPhong);
   }
-  if (data.LoaiPhong) {
-    fields.push("LoaiPhong = ?");
-    values.push(data.LoaiPhong);
+  if (data.MaLoaiPhong) {
+    fields.push("MaLoaiPhong = ?");
+    values.push(data.MaLoaiPhong);
   }
-  if (data.Gia) {
-    fields.push("Gia = ?");
-    values.push(data.Gia);
-  }
+
+  if (fields.length === 0) return false;
 
   values.push(id);
 
-  await db.query(
+  const [result]: any = await db.query(
     `UPDATE Phong SET ${fields.join(", ")} WHERE MaPhong = ?`,
     values,
   );
+  return result.affectedRows > 0;
 };
 
 export const deleteRoom = async (id: number) => {
-  await db.query("DELETE FROM Phong WHERE MaPhong = ?", [id]);
+  const [result]: any = await db.query("DELETE FROM Phong WHERE MaPhong = ?", [
+    id,
+  ]);
+  return result.affectedRows > 0;
 };
