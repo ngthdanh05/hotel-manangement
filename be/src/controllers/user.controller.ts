@@ -1,8 +1,8 @@
-import { db } from "config/db";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { AuthRequest } from "middleware/auth";
+import { AuthRequest } from "@/middleware/auth";
+import { db } from "@/config/db";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {

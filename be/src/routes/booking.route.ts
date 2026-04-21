@@ -1,9 +1,9 @@
-import express from "express";
 import {
   createBooking,
   getHistoryBookings,
-} from "../controllers/booking.controller";
-import { verifyToken } from "../middleware/auth";
+} from "@/controllers/booking.controller";
+import { verifyToken } from "@/middleware/auth";
+import express from "express";
 
 const router = express.Router();
 

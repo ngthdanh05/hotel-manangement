@@ -1,6 +1,6 @@
+import { db } from "@/config/db";
+import { AuthRequest } from "@/middleware/auth";
 import { Response } from "express";
-import { db } from "../config/db";
-import { AuthRequest } from "middleware/auth";
 
 export const createBooking = async (req: AuthRequest, res: Response) => {
   try {
@@ -19,7 +19,7 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
       checkOut,
     ]);
 
-    res.json({ success: true, message: "Đặt phòng thành công" });
+    return res.json({ success: true, message: "Đặt phòng thành công" });
   } catch (error: any) {
     console.error(error);
 
@@ -27,13 +27,13 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: "ROOM_ALREADY_BOOKED" });
     }
 
-    res.status(500).json({ error: "SERVER_ERROR" });
+    return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
   }
 };
 
-export const getHistoryBookings = async (req: any, res: Response) => {
+export const getHistoryBookings = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id;
 
     const [rows] = await db.query(
       `

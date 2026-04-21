@@ -5,6 +5,7 @@ import cors from "cors";
 import { db } from "./config/db";
 import usersRoutes from "./routes/users.route";
 import authRoutes from "./routes/auth.route";
+import roomTypesRoutes from "./routes/roomType.route";
 import roomRoutes from "./routes/room.route";
 import bookingRoutes from "./routes/booking.route";
 
@@ -28,6 +29,7 @@ app.use(
 app.use("/api", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
+app.use("/api/room-types", roomTypesRoutes);
 app.use("/api/bookings", bookingRoutes);
 
 const startServer = async () => {
