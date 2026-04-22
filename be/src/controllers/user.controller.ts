@@ -5,32 +5,42 @@ import { AuthRequest } from "@/middleware/auth";
 import { db } from "@/config/db";
 
 export const registerUser = async (req: Request, res: Response) => {
+  const connection = await db.getConnection();
+  await connection.beginTransaction();
+
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
 
-    if (!name || !email || !password)
-      return res.status(400).json({ error: "ACCOUNT_INVALID" });
-
-    const [exists]: any = await db.query(
+    const [exists]: any = await connection.query(
       "select * from Users where email = ?",
       [email],
     );
-
     if (exists.length > 0) {
+      await connection.rollback();
       return res.status(400).json({ error: "ACCOUNT_ALREADY_EXISTS" });
     }
 
     const password_hash = await bcrypt.hash(password, 10);
-
-    await db.query(
-      `insert into Users (name, email, password_hash, role) values (?, ? ,? , ?)`,
-      [name, email, password_hash, "user"],
+    const [userResult]: any = await connection.query(
+      `insert into Users (name, email, password_hash, role) values (?, ?, ?, 'customer')`,
+      [name, email, password_hash],
     );
 
-    return res.json({ success: true });
+    const userId = userResult.insertId;
+
+    await connection.query(
+      `insert into KhachHang (HoTen, SoDienThoai, id_user) values (?, ?, ?)`,
+      [name, phone, userId],
+    );
+
+    await connection.commit();
+    return res.json({ success: true, message: "Đăng ký thành công" });
   } catch (error) {
+    await connection.rollback();
     console.error(error);
     return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
+  } finally {
+    connection.release();
   }
 };
 
@@ -107,5 +117,48 @@ export const profile = async (req: AuthRequest, res: Response) => {
     return res
       .status(500)
       .json({ success: false, message: "INTERNAL_SERVER_ERROR" });
+  }
+};
+
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const [users]: [any, any] = await db.query(
+      `SELECT id, name, email, role, created_at 
+       FROM Users 
+       ORDER BY created_at DESC`,
+    );
+
+    return res.json({
+      success: true,
+      total: users.length,
+      users: users,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ error: "INTERNAL_SERVER_ERROR" });
+  }
+};
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const [rows]: [any, any] = await db.query(
+      `SELECT id FROM Users WHERE id = ?`,
+      [id],
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "USER_NOT_FOUND" });
+    }
+
+    await db.query(`DELETE FROM Users WHERE id = ?`, [id]);
+
+    return res.json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ error: "INTERNAL_SERVER_ERROR" });
   }
 };

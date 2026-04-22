@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as bookingService from "@/services/booking.service";
 import { db } from "@/config/db";
+import { AuthRequest } from "@/middleware/auth";
 
 export const createBooking = async (req: Request, res: Response) => {
   try {
@@ -119,5 +120,43 @@ export const handleCheckOut = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
+  }
+};
+
+export const finalizeBooking = async (req: AuthRequest, res: Response) => {
+  const connection = await db.getConnection();
+  await connection.beginTransaction();
+
+  try {
+    const { cccd, maPhong, ngayNhan, ngayTra } = req.body;
+    const userId = req.user?.id;
+
+    const [customers]: any = await connection.query(
+      "SELECT MaKhachHang FROM KhachHang WHERE id_user = ?",
+      [userId],
+    );
+    const maKH = customers[0].MaKhachHang;
+
+    await connection.query(
+      "UPDATE KhachHang SET CCCD = ? WHERE MaKhachHang = ?",
+      [cccd, maKH],
+    );
+
+    await connection.query("CALL sp_DatPhong(?, ?, ?, ?)", [
+      maKH,
+      ngayNhan,
+      ngayTra,
+      maPhong,
+    ]);
+
+    await connection.commit();
+    return res.json({ success: true, message: "Đặt phòng thành công!" });
+  } catch (error: any) {
+    await connection.rollback();
+    return res
+      .status(400)
+      .json({ message: error.sqlMessage || "Lỗi đặt phòng" });
+  } finally {
+    connection.release();
   }
 };
