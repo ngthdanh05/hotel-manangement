@@ -9,6 +9,7 @@ interface AuthContextType {
     register: (credentials: {
       name: string;
       email: string;
+      phone: string;
       password: string;
       confirmPassword: string;
     }) => Promise<{ success: boolean; message?: string }>;

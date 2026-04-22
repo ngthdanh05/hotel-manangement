@@ -55,7 +55,7 @@ export default function LoginPage() {
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Password</label>
+            <label className="block text-sm text-gray-300 mb-1">Mật Khẩu</label>
             <input
               type="password"
               className="w-full bg-black/40 text-white border border-white/10 rounded-lg px-4 py-2.5 
@@ -78,9 +78,9 @@ export default function LoginPage() {
 
           {/* Register */}
           <p className="text-center text-gray-400 text-sm">
-            No account yet?{" "}
+            Chưa có tài khoản?{" "}
             <Link to="/register" className="text-accent hover:underline">
-              Register
+              Đăng ký
             </Link>
           </p>
         </form>

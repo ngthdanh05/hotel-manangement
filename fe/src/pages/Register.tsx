@@ -8,6 +8,7 @@ export default function RegisterPage() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -27,6 +28,7 @@ export default function RegisterPage() {
       name,
       email,
       password,
+      phone,
       confirmPassword,
     });
 
@@ -38,6 +40,7 @@ export default function RegisterPage() {
 
     setName("");
     setEmail("");
+    setPhone("");
     setPassword("");
     setConfirmPassword("");
   };
@@ -51,10 +54,7 @@ export default function RegisterPage() {
         {/* Title */}
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-white">
-            Create your{" "}
-            <span className="text-accent underline decoration-accent/50">
-              Account
-            </span>
+            Đăng ký tài khoản mới
           </h2>
         </div>
 
@@ -63,7 +63,7 @@ export default function RegisterPage() {
           {/* Name */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">
-              Full Name
+              Họ và Tên
             </label>
             <input
               type="text"
@@ -89,10 +89,24 @@ export default function RegisterPage() {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Số Điện Thoại
+            </label>
+            <input
+              type="phone"
+              className="w-full bg-black/40 text-white border border-white/10 rounded-lg px-4 py-2.5 
+              focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition placeholder-gray-500"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="1234567890"
+              required
+            />
+          </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Password</label>
+            <label className="block text-sm text-gray-300 mb-1">Mật Khẩu</label>
             <input
               type="password"
               className="w-full bg-black/40 text-white border border-white/10 rounded-lg px-4 py-2.5 
@@ -107,7 +121,7 @@ export default function RegisterPage() {
           {/* Confirm Password */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">
-              Confirm Password
+              Xác Nhận Mật Khẩu
             </label>
             <input
               type="password"
@@ -131,9 +145,9 @@ export default function RegisterPage() {
 
           {/* Login */}
           <p className="text-center text-gray-400 text-sm">
-            I already have an account?{" "}
+            Đã có tài khoản?{" "}
             <Link to="/login" className="text-accent hover:underline">
-              Login
+              Đăng nhập
             </Link>
           </p>
         </form>

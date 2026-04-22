@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import BookingPage from "./pages/Booking";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
 import Header from "./components/layout/Header";
 
 export default function App() {
@@ -8,8 +10,10 @@ export default function App() {
     <Router>
       <Header />
       <Routes>
-        <Route index element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/booking" element={<BookingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* <Route path="/admin/login" element={<LoginForAdmin />} />
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>

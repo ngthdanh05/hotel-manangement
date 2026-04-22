@@ -12,6 +12,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  phone: string;
   role: string;
 }
 
@@ -19,6 +20,7 @@ interface Credentials {
   email: string;
   password?: string;
   name?: string;
+  phone?: string;
   confirmPassword?: string;
 }
 
