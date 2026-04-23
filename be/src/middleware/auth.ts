@@ -22,12 +22,12 @@ export const verifyToken = (
   req: AuthRequest,
   res: Response,
   next: NextFunction,
-) => {
+): void => {
   const token =
     req.cookies?.session_token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: "UNAUTHORIZED" });
+    res.status(401).json({ error: "UNAUTHORIZED" });
   }
 
   try {
@@ -37,14 +37,14 @@ export const verifyToken = (
       role: "user" | "admin";
     };
 
-    return (req.user = decoded);
+    req.user = decoded;
 
     next();
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ error: "TOKEN_EXPIRED" });
+      res.status(401).json({ error: "TOKEN_EXPIRED" });
     }
 
-    return res.status(403).json({ error: "INVALID_TOKEN" });
+    res.status(403).json({ error: "INVALID_TOKEN" });
   }
 };

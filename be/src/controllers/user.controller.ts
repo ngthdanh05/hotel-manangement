@@ -51,9 +51,13 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!email || !password)
       return res.status(400).json({ error: "ACCOUNT_INVALID" });
 
-    const [rows]: any = await db.query("select * from Users where email = ?", [
-      email,
-    ]);
+    const [rows]: any = await db.query(
+      `SELECT u.id, u.name, u.email, u.role, u.password_hash, k.SoDienThoai
+   FROM Users u
+   LEFT JOIN KhachHang k ON u.id = k.id_user
+   WHERE u.email = ?`,
+      [email],
+    );
 
     if (rows.length === 0)
       return res.status(400).json({ error: "ACCOUNT_NOT_FOUND" });
@@ -76,7 +80,16 @@ export const loginUser = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.json({ success: true });
+    return res.json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.SoDienThoai || "",
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
@@ -96,13 +109,13 @@ export const logoutUser = async (req: Request, res: Response) => {
 export const profile = async (req: AuthRequest, res: Response) => {
   try {
     const [rows]: any = await db.query(
-      `select id, name, email, created_at 
-        from Users
-       where email = ? 
-       limit 1`,
+      `SELECT u.id, u.name, u.email, u.role, k.SoDienThoai
+   FROM Users u
+   LEFT JOIN KhachHang k ON u.id = k.id_user
+   WHERE u.email = ?
+   LIMIT 1`,
       [req.user?.email],
     );
-
     const user = rows[0];
 
     if (!user) {
@@ -111,7 +124,16 @@ export const profile = async (req: AuthRequest, res: Response) => {
         .json({ success: false, message: "USER_NOT_FOUND" });
     }
 
-    return res.json({ success: true, data: user });
+    return res.json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.SoDienThoai || "",
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
     return res
