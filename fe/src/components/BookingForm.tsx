@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-
+import { useNavigate } from "react-router-dom";
 export interface RoomSearchRequest {
   ngayNhan: string;
   ngayTra: string;
@@ -7,6 +7,7 @@ export interface RoomSearchRequest {
 }
 
 const BookingForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<RoomSearchRequest>({
     ngayNhan: "",
     ngayTra: "",
@@ -23,7 +24,7 @@ const BookingForm = () => {
     }));
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (new Date(formData.ngayNhan) >= new Date(formData.ngayTra)) {
@@ -31,58 +32,64 @@ const BookingForm = () => {
       return;
     }
 
-    console.log("Gửi yêu cầu tìm phòng:", formData);
+    const queryParams = new URLSearchParams({
+      checkIn: formData.ngayNhan,
+      checkOut: formData.ngayTra,
+      guests: formData.soNguoi.toString(),
+    });
+
+    navigate(`/rooms?${queryParams.toString()}`);
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="
-        bg-[#ffb700] 
-        rounded-xl 
-        p-2 
-        shadow-lg 
-        w-full
-        max-w-xl
-      "
+      className="bg-[#ffb700] rounded-xl p-2 shadow-lg w-full max-w-xl"
     >
       <div className="bg-white rounded-lg p-4 text-center font-bold text-black text-lg">
         ĐẶT PHÒNG NGAY
       </div>
 
-      {/* GRID responsive */}
       <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {/* Date */}
-        <div className="bg-white p-3 rounded flex items-center gap-2">
-          <span>📅</span>
-          <input
-            type="date"
-            name="ngayNhan"
-            className="outline-none text-black w-full text-sm"
-            value={formData.ngayNhan}
-            onChange={handleChange}
-            required
-          />
+        <div className="bg-white p-3 rounded flex flex-col gap-1">
+          <label className="text-[10px] font-bold text-gray-400 uppercase">
+            Ngày nhận
+          </label>
+          <div className="flex items-center gap-2">
+            <span>📅</span>
+            <input
+              type="date"
+              name="ngayNhan"
+              className="outline-none text-black w-full text-sm cursor-pointer"
+              value={formData.ngayNhan}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
-        <div className="bg-white p-3 rounded flex items-center gap-2">
-          <span>📅</span>
-          <input
-            type="date"
-            name="ngayTra"
-            className="outline-none text-black w-full text-sm"
-            value={formData.ngayTra}
-            onChange={handleChange}
-            required
-          />
+        <div className="bg-white p-3 rounded flex flex-col gap-1">
+          <label className="text-[10px] font-bold text-gray-400 uppercase">
+            Ngày trả
+          </label>
+          <div className="flex items-center gap-2">
+            <span>📅</span>
+            <input
+              type="date"
+              name="ngayTra"
+              className="outline-none text-black w-full text-sm cursor-pointer"
+              value={formData.ngayTra}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
-        {/* Guest */}
         <div className="bg-white p-3 rounded flex items-center gap-2 sm:col-span-2">
           <span>👤</span>
           <select
             name="soNguoi"
-            className="outline-none w-full text-black"
+            className="outline-none w-full text-black bg-transparent cursor-pointer"
             value={formData.soNguoi}
             onChange={handleChange}
           >
@@ -93,21 +100,11 @@ const BookingForm = () => {
         </div>
       </div>
 
-      {/* Button */}
       <button
         type="submit"
-        className="
-          mt-2 w-full 
-          bg-[#0071c2] 
-          text-white 
-          py-3 
-          rounded-lg 
-          font-semibold 
-          hover:bg-blue-700 
-          transition
-        "
+        className="mt-2 w-full bg-[#0071c2] text-white py-4 rounded-lg font-bold hover:bg-blue-800 transition-all active:scale-[0.98] shadow-md"
       >
-        Tìm phòng
+        TÌM PHÒNG TRỐNG
       </button>
     </form>
   );
