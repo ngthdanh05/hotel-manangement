@@ -3,6 +3,7 @@ import httpRequest from "../utils/httpRequest";
 interface Data {
   email: string;
   name?: string;
+  phone?: string;
   password?: string;
   confirmPassword?: string;
   newPassword?: string;

@@ -16,7 +16,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result.success) {
-      window.location.href = "/";
+      window.location.href = "/admin";
     }
   };
 

@@ -5,10 +5,10 @@ import { useAuth } from "../../context/auth/AuthContext";
 
 const Header = () => {
   const { isAuthenticated, user, actions } = useAuth();
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log(user);
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 856);
@@ -114,9 +114,11 @@ const Header = () => {
           ) : (
             <Link
               to="/login"
-              className="bg-white px-3 py-2 lg:px-5 lg:py-3 rounded-lg hover:bg-white/80 cursor-pointer"
+              className="bg-gray-800 px-3 py-2 lg:px-5 lg:py-3  rounded-lg hover:bg-gray-700 cursor-pointer"
             >
-              <span className="text-black font-bold">Đăng nhập</span>
+              <span className="text-white text-base lg:text-lg font-semibold">
+                Đăng nhập
+              </span>
             </Link>
           )}
         </div>
