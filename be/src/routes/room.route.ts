@@ -1,9 +1,8 @@
 import {
-  getAvailableRooms,
-  getRooms,
   createRoom,
   deleteRoom,
   updateRoom,
+  getRooms,
 } from "@/controllers/room.controller";
 import express from "express";
 
@@ -13,6 +12,5 @@ router.post("/", createRoom);
 router.get("/", getRooms);
 router.put("/:id", updateRoom);
 router.delete("/:id", deleteRoom);
-router.get("/getAvailableRooms", getAvailableRooms);
 
 export default router;

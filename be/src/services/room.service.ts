@@ -15,13 +15,40 @@ export const createRoom = async (data: {
   return result.insertId;
 };
 
-export const getAllRooms = async () => {
-  const [rows] = await db.query(`
-    SELECT p.MaPhong, p.SoPhong, lp.TenLoai, lp.Gia, lp.SoNguoi
-    FROM Phong p
-    JOIN LoaiPhong lp ON p.MaLoaiPhong = lp.MaLoaiPhong
-  `);
+export const getAllRoomTypes = async () => {
+  const [rows] = await db.query("SELECT * FROM v_GiaoDienKhachHang");
   return rows;
+};
+
+export const getAvailableRooms = async (checkIn: string, checkOut: string) => {
+  const [rows]: any = await db.query("CALL sp_TimPhongTrong(?, ?)", [
+    checkIn,
+    checkOut,
+  ]);
+
+  const rawRooms = rows[0] || [];
+
+  const groupedRooms = rawRooms.reduce((acc: any, room: any) => {
+    const key = room.MaLoaiPhong;
+
+    if (!acc[key]) {
+      acc[key] = {
+        MaLoaiPhong: room.MaLoaiPhong,
+        TenLoai: room.TenLoai,
+        Gia: room.Gia,
+        MoTa: room.MoTa,
+        SoNguoi: room.SoNguoi,
+        SoPhongTrong: 0,
+        ConPhong: 1,
+      };
+    }
+
+    acc[key].SoPhongTrong += 1;
+
+    return acc;
+  }, {});
+
+  return Object.values(groupedRooms);
 };
 
 export const updateRoom = async (
