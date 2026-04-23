@@ -1,6 +1,6 @@
 import Stack from "./Stack";
-import TourCard from "./TourCard";
 import BookingForm from "./BookingForm";
+import RoomTypeCard from "./RoomTypeCard";
 
 const Hero = () => {
   return (
@@ -43,13 +43,23 @@ const Hero = () => {
             <div className="absolute w-[300px] h-[300px] bg-[#ffb700] blur-[120px] opacity-30 rounded-full" />
 
             <div className="relative w-[280px] sm:w-[320px] md:w-[380px] lg:w-[450px] h-[360px] sm:h-[420px] md:h-[500px]">
-              <Stack
-                cards={TourCard}
-                autoplay
-                autoplayDelay={3000}
-                pauseOnHover
-                randomRotation
-                sendToBackOnClick
+              <RoomTypeCard
+                render={(cards, loading) =>
+                  loading ? (
+                    <div className="w-full h-full bg-white/5 animate-pulse rounded-2xl flex items-center justify-center">
+                      <span className="text-gray-400">Đang tải phòng...</span>
+                    </div>
+                  ) : (
+                    <Stack
+                      cards={cards}
+                      autoplay
+                      autoplayDelay={3000}
+                      pauseOnHover
+                      randomRotation
+                      sendToBackOnClick
+                    />
+                  )
+                }
               />
             </div>
           </div>

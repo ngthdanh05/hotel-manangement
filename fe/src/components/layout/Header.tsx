@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { useAuth } from "../../context/auth/AuthContext";
@@ -50,18 +50,53 @@ const Header = () => {
         </Link>
 
         <div className="hidden md:flex items-center gap-8 font-medium text-gray-100">
-          <a
-            href="/booking"
-            className="hover:text-orange-600 transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-orange-500 hover:after:w-full after:transition-all"
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `relative transition-colors hover:text-orange-600 
+       after:content-[''] after:absolute after:bottom-[-4px] after:left-0 
+       after:h-[2px] after:bg-orange-500 after:transition-all
+       ${isActive ? "after:w-full text-orange-500" : "after:w-0 hover:after:w-full"}`
+            }
           >
-            Khách sạn
-          </a>
-          <a href="#" className="hover:text-orange-600 transition-colors">
-            Về chúng tôi
-          </a>
-          <a href="#" className="hover:text-orange-600 transition-colors">
-            Liên hệ
-          </a>
+            Trang Chủ
+          </NavLink>
+
+          <NavLink
+            to="/rooms"
+            className={({ isActive }) =>
+              `relative transition-colors hover:text-orange-600 
+       after:content-[''] after:absolute after:bottom-[-4px] after:left-0 
+       after:h-[2px] after:bg-orange-500 after:transition-all
+       ${isActive ? "after:w-full text-orange-500" : "after:w-0 hover:after:w-full"}`
+            }
+          >
+            Phòng
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `relative transition-colors hover:text-orange-600 
+       after:content-[''] after:absolute after:bottom-[-4px] after:left-0 
+       after:h-[2px] after:bg-orange-500 after:transition-all
+       ${isActive ? "after:w-full text-orange-500" : "after:w-0 hover:after:w-full"}`
+            }
+          >
+            Về Chúng Tôi
+          </NavLink>
+
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              `relative transition-colors hover:text-orange-600 
+       after:content-[''] after:absolute after:bottom-[-4px] after:left-0 
+       after:h-[2px] after:bg-orange-500 after:transition-all
+       ${isActive ? "after:w-full text-orange-500" : "after:w-0 hover:after:w-full"}`
+            }
+          >
+            Liên Hệ
+          </NavLink>
         </div>
 
         <div className="hidden md:flex">
