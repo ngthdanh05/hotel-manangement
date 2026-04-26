@@ -9,6 +9,8 @@ import AdminLayout from "./components/layout/AdminLayout";
 import RoomsPage from "./pages/Rooms";
 import AboutPage from "./pages/About";
 import ContactPage from "./pages/Contact";
+import BookingPage from "./pages/Booking";
+import BookingHistory from "./pages/BookingHistory";
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/booking" element={<BookingPage />} />
+          <Route path="/history" element={<BookingHistory />} />
         </Route>
 
         <Route path="/admin/login" element={<LoginForAdmin />} />

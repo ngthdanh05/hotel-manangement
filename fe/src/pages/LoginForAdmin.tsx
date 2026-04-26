@@ -27,9 +27,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-2xl">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-white">
-            Welcome to{" "}
+            Welcome{" "}
             <span className="text-accent underline decoration-accent/50">
-              MY WEBSITE
+              ADMIN
             </span>
           </h2>
         </div>
@@ -70,13 +70,6 @@ export default function LoginPage() {
           >
             {loading ? "Đang đăng nhập..." : "Đăng Nhập"}
           </button>
-
-          <p className="text-center text-gray-400 text-sm">
-            Chưa có tài khoản?{" "}
-            <Link to="/register" className="text-accent hover:underline">
-              Đăng ký
-            </Link>
-          </p>
         </form>
       </div>
     </div>

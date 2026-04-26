@@ -4,14 +4,12 @@ import { useSearchParams } from "react-router-dom";
 const RoomSidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 1. Khởi tạo State từ URL (nếu có)
   const [filter, setFilter] = useState({
     checkIn: searchParams.get("checkIn") || "",
     checkOut: searchParams.get("checkOut") || "",
     guests: searchParams.get("guests") || "1",
   });
 
-  // 2. Cập nhật UI nếu URL thay đổi (ví dụ khách nhấn tìm kiếm lại ở Header)
   useEffect(() => {
     setFilter({
       checkIn: searchParams.get("checkIn") || "",
@@ -81,13 +79,12 @@ const RoomSidebar = () => {
                   name="checkOut"
                   value={filter.checkOut}
                   onChange={handleInputChange}
-                  className="w-full bg-white border text-black border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none transition-all"
+                  className="w-full bg-white border text-black border-gray-200 rounded-lg px-6 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none transition-all"
                 />
               </div>
             </div>
           </div>
 
-          {/* Số người */}
           <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
             <h3 className="text-sm font-bold text-gray-700 uppercase mb-4 tracking-wider">
               Số Người Ở

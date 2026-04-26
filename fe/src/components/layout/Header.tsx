@@ -45,7 +45,7 @@ const Header = () => {
             />
           </svg>
           <span className="text-xl font-bold text-white tracking-wide">
-            Lux<span className="text-[#c8a96e]">Stay</span>
+            Peak<span className="text-[#c8a96e]">Stay</span>
           </span>
         </Link>
 
@@ -134,7 +134,12 @@ const Header = () => {
                   >
                     Quản lý hồ sơ
                   </Link>
-
+                  <Link
+                    to="/history"
+                    className="block w-full text-left text-gray-700 hover:bg-sky-100 hover:text-sky-800 rounded px-3 py-2 transition"
+                  >
+                    Lịch sử đặt phòng
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="mt-2 block w-full text-left text-red-600 hover:bg-red-100 hover:text-red-700 rounded px-3 py-2 transition outline-none cursor-pointer"

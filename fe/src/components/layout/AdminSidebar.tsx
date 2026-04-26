@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCartShopping,
   faFolder,
   faHouse,
   faPlus,
@@ -19,27 +18,21 @@ const menuItems = [
   },
   {
     id: 1,
-    label: "Quản lý danh mục",
-    to: "categories",
+    label: "Quản Lý Đặt Phòng",
+    to: "booking",
     icon: faFolder,
   },
   {
     id: 2,
-    label: "Quản lý sản phẩm",
-    to: "products",
+    label: "Quản lý Khách Hàng",
+    to: "Customer",
     icon: faPlus,
   },
   {
     id: 3,
-    label: "Quản lý người dùng",
-    to: "users",
+    label: "Quản lý Phòng",
+    to: "rooms",
     icon: faUser,
-  },
-  {
-    id: 4,
-    label: "Quản lý đơn hàng",
-    to: "orders",
-    icon: faCartShopping,
   },
 ];
 
@@ -72,7 +65,7 @@ export default function AdminSidebar() {
           />
         </svg>
         <span className="text-2xl font-bold text-gray-700 tracking-wide">
-          Lux<span className="text-[#c8a96e]">Stay</span>
+          Peak<span className="text-[#c8a96e]">Stay</span>
         </span>
       </div>
 

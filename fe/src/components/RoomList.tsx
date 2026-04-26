@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import httpRequest from "../utils/httpRequest";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface RoomType {
   MaLoaiPhong: number;
@@ -30,6 +31,23 @@ const RoomList = () => {
   const [roomTypes, setRoomTypes] = useState<RoomType[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const checkInParam = queryParams.get("checkIn");
+  const checkOutParam = queryParams.get("checkOut");
+
+  const handleBooking = (type: RoomType) => {
+    navigate("/booking", {
+      state: {
+        room: type,
+        checkIn: checkInParam,
+        checkOut: checkOutParam,
+      },
+    });
+  };
+
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -44,7 +62,7 @@ const RoomList = () => {
       }
     };
     fetchRooms();
-  }, []);
+  }, [location.search]);
 
   if (loading)
     return (
@@ -161,6 +179,7 @@ const RoomList = () => {
                 </div>
 
                 <button
+                  onClick={() => handleBooking(type)}
                   disabled={!isAvailable}
                   className={`relative overflow-hidden group/btn px-12 py-4 rounded-3xl font-black text-sm tracking-widest transition-all duration-300 ${
                     isAvailable
