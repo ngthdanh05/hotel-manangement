@@ -128,13 +128,18 @@ export const finalizeBooking = async (req: AuthRequest, res: Response) => {
   await connection.beginTransaction();
 
   try {
-    const { cccd, maPhong, ngayNhan, ngayTra } = req.body;
+    const { cccd, maLoaiPhong, ngayNhan, ngayTra } = req.body;
     const userId = req.user?.id;
+
+    if (!userId) return res.status(401).json({ message: "Bạn chưa đăng nhập" });
 
     const [customers]: any = await connection.query(
       "SELECT MaKhachHang FROM KhachHang WHERE id_user = ?",
       [userId],
     );
+
+    if (customers.length === 0)
+      throw new Error("Không tìm thấy thông tin khách hàng");
     const maKH = customers[0].MaKhachHang;
 
     await connection.query(
@@ -142,21 +147,68 @@ export const finalizeBooking = async (req: AuthRequest, res: Response) => {
       [cccd, maKH],
     );
 
+    const [availableRooms]: any = await connection.query(
+      `SELECT p.MaPhong 
+   FROM Phong p
+   WHERE p.MaLoaiPhong = ? 
+   AND p.MaPhong NOT IN (
+     SELECT ct.MaPhong 
+     FROM ChiTietDatPhong ct
+     JOIN DatPhong dp ON ct.MaDatPhong = dp.MaDatPhong
+     WHERE NOT (dp.NgayTraPhong <= ? OR dp.NgayNhanPhong >= ?)
+   ) 
+   LIMIT 1`,
+      [maLoaiPhong, ngayNhan, ngayTra],
+    );
+
+    if (availableRooms.length === 0) {
+      return res.status(400).json({
+        message: "Loại phòng này đã hết phòng trống trong khoảng thời gian này",
+      });
+    }
+    const maPhongThucTe = availableRooms[0].MaPhong;
+
     await connection.query("CALL sp_DatPhong(?, ?, ?, ?)", [
       maKH,
       ngayNhan,
       ngayTra,
-      maPhong,
+      maPhongThucTe,
     ]);
 
     await connection.commit();
     return res.json({ success: true, message: "Đặt phòng thành công!" });
   } catch (error: any) {
     await connection.rollback();
+    console.error("Lỗi Controller:", error);
     return res
       .status(400)
-      .json({ message: error.sqlMessage || "Lỗi đặt phòng" });
+      .json({ message: error.message || "Lỗi hệ thống khi đặt phòng" });
   } finally {
     connection.release();
+  }
+};
+
+export const getHistoryBooking = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: "Bạn cần đăng nhập để xem lịch sử" });
+    }
+
+    const [rows]: any = await db.query(
+      "SELECT * FROM v_Booking WHERE id_user = ? ORDER BY MaDatPhong DESC",
+      [userId],
+    );
+
+    return res.json({
+      success: true,
+      data: rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
   }
 };
