@@ -84,6 +84,22 @@ export const handleCheckIn = async (req: Request, res: Response) => {
   }
 };
 
+export const handleCheckOut = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const invoice = await bookingService.checkOut(Number(id));
+
+    return res.json({
+      success: true,
+      message: "CheckOut successfully!",
+      invoice: invoice,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
+  }
+};
+
 export const deleteBooking = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -101,22 +117,6 @@ export const deleteBooking = async (req: Request, res: Response) => {
 
     await bookingService.deleteBooking(Number(id));
     return res.json({ success: true, message: "Delete booking successfully!" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
-  }
-};
-
-export const handleCheckOut = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const invoice = await bookingService.checkOut(Number(id));
-
-    return res.json({
-      success: true,
-      message: "CheckOut successfully!",
-      invoice: invoice,
-    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "INTERNAL SERVER ERROR" });
@@ -170,9 +170,9 @@ export const finalizeBooking = async (req: AuthRequest, res: Response) => {
 
     await connection.query("CALL sp_DatPhong(?, ?, ?, ?)", [
       maKH,
+      maPhongThucTe,
       ngayNhan,
       ngayTra,
-      maPhongThucTe,
     ]);
 
     await connection.commit();
