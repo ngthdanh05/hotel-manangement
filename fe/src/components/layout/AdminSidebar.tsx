@@ -19,13 +19,13 @@ const menuItems = [
   {
     id: 1,
     label: "Quản Lý Đặt Phòng",
-    to: "booking",
+    to: "bookings",
     icon: faFolder,
   },
   {
     id: 2,
     label: "Quản lý Khách Hàng",
-    to: "Customer",
+    to: "customers",
     icon: faPlus,
   },
   {

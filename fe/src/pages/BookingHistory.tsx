@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarAlt,
-  faHashtag,
   faUser,
   faBed,
   faArrowRight,
@@ -25,7 +24,7 @@ interface Booking {
   SoNgay: number;
   Gia: number;
   TongTien: number;
-  TrangThai: "da_dat" | "da_nhan_phong" | "da_thanh_toan" | "da_huy";
+  TrangThai: "da_dat" | "dang_o" | "da_tra" | "da_huy";
 }
 
 const BookingHistory = () => {
@@ -52,13 +51,28 @@ const BookingHistory = () => {
     fetchHistory();
   }, []);
 
+  const getStatusLabel = (status: Booking["TrangThai"]) => {
+    switch (status) {
+      case "da_dat":
+        return "Đã đặt";
+      case "dang_o":
+        return "Đã nhận phòng";
+      case "da_tra":
+        return "Đã thanh toán";
+      case "da_huy":
+        return "Đã huỷ";
+      default:
+        return "Không xác định";
+    }
+  };
+
   const getStatusStyle = (status: string) => {
     switch (status) {
       case "da_dat":
         return "bg-amber-500/10 text-amber-500 border-amber-500/20";
-      case "da_nhan_phong":
+      case "dang_o":
         return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "da_thanh_toan":
+      case "da_tra":
         return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
       case "da_huy":
         return "bg-rose-500/10 text-rose-500 border-rose-500/20";
@@ -132,9 +146,9 @@ const BookingHistory = () => {
                   <div className="space-y-6 flex-1">
                     <div className="flex items-center gap-4">
                       <span
-                        className={`px-5 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(booking.TrangThai)}`}
+                        className={`px-5 py-1.5 rounded-full text-[12px] font-black uppercase tracking-widest border ${getStatusStyle(booking.TrangThai)}`}
                       >
-                        {booking.TrangThai.replace("_", " ")}
+                        {getStatusLabel(booking.TrangThai)}
                       </span>
                     </div>
 
@@ -227,6 +241,15 @@ const BookingHistory = () => {
                 >
                   <FontAwesomeIcon icon={faTimes} />
                 </button>
+              </div>
+              <div className="mb-6">
+                <span
+                  className={`inline-flex items-center justify-center w-full gap-2 px-4 py-2 rounded-xl font-black uppercase tracking-widest border ${getStatusStyle(
+                    selectedBooking.TrangThai,
+                  )}`}
+                >
+                  {getStatusLabel(selectedBooking.TrangThai)}
+                </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">

@@ -11,6 +11,10 @@ import AboutPage from "./pages/About";
 import ContactPage from "./pages/Contact";
 import BookingPage from "./pages/Booking";
 import BookingHistory from "./pages/BookingHistory";
+import DashboardPage from "./pages/admin/Dashboard";
+import BookingManagementPage from "./pages/admin/BookingManagement";
+import CustomerManagementPage from "./pages/admin/CustomerManagement";
+import RoomManagementPage from "./pages/admin/RoomManagement";
 
 export default function App() {
   return (
@@ -30,11 +34,10 @@ export default function App() {
         <Route path="/admin/login" element={<LoginForAdmin />} />
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/admin" element={<AdminLayout />}>
-            {/* <Route index element={<DashBoard />} />
-            <Route path="categories" element={<CategoryManagement />} />
-            <Route path="products" element={<ProductManagement />} />
-            <Route path="users" element={<UsersManagement />} />
-            <Route path="orders" element={<OrdersManagement />} /> */}
+            <Route index element={<DashboardPage />} />
+            <Route path="bookings" element={<BookingManagementPage />} />
+            <Route path="customers" element={<CustomerManagementPage />} />
+            <Route path="rooms" element={<RoomManagementPage />} />
           </Route>
         </Route>
       </Routes>
