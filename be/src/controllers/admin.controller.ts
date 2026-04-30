@@ -101,6 +101,8 @@ export const getAllBookings = async (req: Request, res: Response) => {
 export const updateBookings = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
+
+  const connection = await db.getConnection();
   try {
     switch (status) {
       case "dang_o":
@@ -129,12 +131,12 @@ export const updateBookings = async (req: Request, res: Response) => {
         break;
 
       case "da_huy":
-        await db.beginTransaction();
-        await db.query(
+        await connection.beginTransaction();
+        await connection.query(
           "UPDATE DatPhong SET TrangThai = 'da_huy' WHERE MaDatPhong = ?",
           [id],
         );
-        await db.query(
+        await connection.query(
           `
             UPDATE Phong p 
             JOIN ChiTietDatPhong ct ON p.MaPhong = ct.MaPhong 
@@ -143,7 +145,7 @@ export const updateBookings = async (req: Request, res: Response) => {
           `,
           [id],
         );
-        await db.commit();
+        await connection.commit();
         break;
 
       case "da_dat":

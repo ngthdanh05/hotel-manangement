@@ -10,6 +10,7 @@ import roomRoutes from "./routes/room.route";
 import bookingRoutes from "./routes/booking.route";
 import customerRoutes from "./routes/customer.route";
 import adminRoutes from "./routes/admin.route";
+import demoErrorRoutes from "./routes/demoError.route";
 
 dotenv.config();
 const app: Application = express();
@@ -35,6 +36,7 @@ app.use("/api/room-types", roomTypesRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/demo", demoErrorRoutes);
 
 const startServer = async () => {
   try {
